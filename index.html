@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Zahnaerzte Vorarlberg</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🦷</text></svg>">
+    </head>
+    <body>
+        <div class = "wrapper">
+            <header>
+                <h1>&#129463; Zahnärzteverwaltung &#129463;</h1>
+            </header>
+            <nav>
+                <div>
+                    <p>Wann benötigen Sie den Termin?</p>
+                    <label for="jetzt">Jetzt</label>
+                    <input type="radio" name="wann" id="jetzt"><br>
+                    <label for="in3Monaten">In 3 Monaten</label>
+                    <input type="radio" name="wann" id="in3Monaten"><br>
+                    <label for="in6Monaten">In 6 Monaten</label>
+                    <input type="radio" name="wann" id="in6Monaten">
+                </div>
+
+                <div>
+                    <p>Für welche Kasse?</p>
+                    <label for="jetzt">Privat</label>
+                    <input type="radio" name="kasse" id="jetzt"><br>
+                    <label for="in3Monaten">ÖGK</label>
+                    <input type="radio" name="kasse" id="in3Monaten"><br>
+                    <label for="in6Monaten">BVAEB</label>
+                    <input type="radio" name="kasse" id="in6Monaten">
+                </div>
+
+                <div>
+                    <p>Weitere Filter</p>
+                    <label for="bezirk">Bezirk Suche: </label><br>
+                    <input placeholder ="PLZ" type="text" name="bezirk" id="bezirk"><br>
+                    <input type="button" value="Filter">
+                </div>
+
+            </nav>
+            <main>
+                <div id="map"></div>
+            </main>
+        </div>
+    </body>
+</html>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<!--Leaflet JS Ajax-->
+<script src="leaflet.ajax.min.js"></script>
+
+<!-- Leaflet JS -->
+<script>
+    //Initialize Map
+    var map = L.map('map').setView([47.40450089476823, 9.743661351409942], 9);
+
+    //OSM Layer
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+    osm.addTo(map);
+
+    //Marker
+    var marker = L.marker([47.40450089476823, 9.743661351409942]).addTo(map);
+
+    //GeoJson Ajax
+    var geojsonLayer = new L.GeoJSON.AJAX("marker.geojson");       
+    geojsonLayer.addTo(map);
+
+    var overlayMap = {
+        "Arzt" : marker
+    };
+
+    L.control.layers(overlayMap).addTo(map);
+</script>
